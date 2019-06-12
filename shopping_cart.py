@@ -33,10 +33,14 @@ products = [
 # Info Capture/Input
 #
 
-selected_id = input("Please put in a Product Identifier: ")
-matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
-matching_product = matching_products[0]
-print(f"Selected Product: {matching_product['name']} {matching_product['price']}")
+while True:
+    selected_id = input("Please put in a Product Identifier: ")
+    if selected_id == "DONE":
+        break
+    else: 
+        matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
+        matching_product = matching_products[0]
+        print(f"Selected Product: {matching_product['name']} {matching_product['price']}")
 
 #
 # Info Display / Output
