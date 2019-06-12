@@ -29,14 +29,19 @@ products = [
 localtime = time.asctime( time.localtime(time.time()) )
 total_price = 0
 selected_ids = []
+id_list = []
+for i in products:
+    id_list.append(i["id"])
 
 while True:
     selected_id = input("Please input a product identifier: ")
-    if selected_id == "DONE":
+    if selected_id == "DONE" or selected_id == "Done" or selected_id == "done":
         break
+    while selected_id not in str(id_list):
+        selected_id = input("Invalid ID.  Please input product identifier: ")
     else:
         selected_ids.append(selected_id)
-
+        
 print("---------------------------------")
 print("Green Foods Grocery")
 print("www.Green-Foods-Grocery.com")
