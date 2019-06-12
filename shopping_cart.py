@@ -34,11 +34,12 @@ for i in products:
     id_list.append(i["id"])
 
 while True:
-    selected_id = input("Please input a product identifier: ")
+    selected_id = input("Please input a product identifier or type 'Done': ")
     if selected_id == "DONE" or selected_id == "Done" or selected_id == "done":
         break
     while selected_id not in str(id_list):
-        selected_id = input("Invalid ID.  Please input product identifier: ")
+        print("ID Not found.  Please try again.")
+        break
     else:
         selected_ids.append(selected_id)
         
