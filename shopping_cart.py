@@ -1,6 +1,7 @@
 # shopping_cart.py
 
 #from pprint import pprint
+import time
 
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
@@ -25,36 +26,31 @@ products = [
     {"id":20, "name": "Pomegranate Cranberry & Aloe Vera Enrich Drink", "department": "beverages", "aisle": "juice nectars", "price": 4.25}
 ] # based on data from Instacart: https://www.instacart.com/datasets/grocery-shopping-2017
 
-# print(products)
-# pprint(products)
-
-
-#
-# Info Capture/Input
-#
+localtime = time.asctime( time.localtime(time.time()) )
 total_price = 0
+selected_ids = []
 
 while True:
-    selected_id = input("Please put in a Product Identifier: ")
-    if selected_id == "DONE":
+    selected_id = input("Please input a product identifier: ")
+    if selected_id == "Done":
         break
-    else: 
-        matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
-        matching_product = matching_products[0]
-        total_price = total_price + matching_product['price']
-        print(f"Selected Product: {matching_product['name']} {matching_product['price']}")
+    else:
+        selected_ids.append(selected_id)
 
-#
-# Info Display / Output
-#
+for selected_id in selected_ids:
+    matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
+    matching_product = matching_products[0]
+    total_price = total_price + matching_product["price"]
+    print("Selected Product: " + matching_product["name"] + " " + str(matching_product["price"]))
 
-print(f"Total Price: {str(total_price)}")
+print("---------------------------------")
+print("Green Foods Grocery")
+print("www.Green-Foods-Grocery.com")
+print("---------------------------------")
+print("Checkout at: " + localtime)
 
-#A grocery store name of your choice
-#A grocery store phone number and/or website URL and/or address of choice
-#The date and time of the beginning of the checkout process, formatted in a human-friendly way (e.g. 2019-06-06 11:31 AM)
-#The name and price of each shopping cart item, price being formatted as US dollars and cents (e.g. $1.50)
-#The total cost of all shopping cart items, formatted as US dollars and cents (e.g. $4.50), calculated as the sum of their prices
-#The amount of tax owed (e.g. $0.39), calculated by multiplying the total cost by a New York City sales tax rate of 8.75% (for the purposes of this project, groceries are not exempt from sales tax)
-#The total amount owed, formatted as US dollars and cents (e.g. $4.89), calculated by adding together the amount of tax owed plus the total cost of all shopping cart items
-#A friendly message thanking the customer and/or encouraging the customer to shop again
+
+
+
+
+print("Total Price: " + str(total_price))
