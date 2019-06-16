@@ -23,7 +23,8 @@ products = [
     {"id":17, "name": "Rendered Duck Fat", "department": "meat seafood", "aisle": "poultry counter", "price": 9.99},
     {"id":18, "name": "Pizza for One Suprema Frozen Pizza", "department": "frozen", "aisle": "frozen pizza", "price": 12.50},
     {"id":19, "name": "Gluten Free Quinoa Three Cheese & Mushroom Blend", "department": "dry goods pasta", "aisle": "grains rice dried goods", "price": 3.99},
-    {"id":20, "name": "Pomegranate Cranberry & Aloe Vera Enrich Drink", "department": "beverages", "aisle": "juice nectars", "price": 4.25}
+    {"id":20, "name": "Pomegranate Cranberry & Aloe Vera Enrich Drink", "department": "beverages", "aisle": "juice nectars", "price": 4.25},
+    {"id":21, "name": "Organic Bananas", "department": "produce", "aisle": "Fruit", "price": 0.79, "price_per": 1}
 ] # based on data from Instacart: https://www.instacart.com/datasets/grocery-shopping-2017
 
 localtime = time.asctime( time.localtime(time.time()) )
@@ -34,14 +35,17 @@ for i in products:
     id_list.append(i["id"])
 
 while True:
-    selected_id = input("Please input a product identifier or type 'Done': ")
-    if selected_id == "DONE" or selected_id == "Done" or selected_id == "done":
+    selected_id = input("Please input a product identifier or type 'Done': ").lower()
+    if selected_id == "done":
         break
     while selected_id not in str(id_list):
         print("ID Not found.  Please try again.")
         break
     else:
         selected_ids.append(selected_id)
+        #[p for p in selected_ids if str(p["price_per"])] == 1
+        #pounds == input("# of Pounds").lower()
+
         
 print("---------------------------------")
 print("Green Foods Grocery")
@@ -55,14 +59,14 @@ for selected_id in selected_ids:
     matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
     matching_product = matching_products[0]
     print("... " + matching_product["name"] + " (" + str('${:,.2f}'.format(matching_product["price"])) + ")")
-    total_price = total_price + matching_product["price"]
+    total_price = matching_product["price"]
     tax = total_price * 0.0875
     total_total = total_price + tax
 
 print("---------------------------------")
 print("SUBTOTAL: " + str('${:,.2f}'.format(total_price)))
-print("TAX: " + str('${:,.2f}'.format(tax)))
-print("TOTAL: " + str('${:,.2f}'.format(total_total)))
+print("TAX: " + str('${:,.2f}'.format(total_price*.0875)))
+print("TOTAL: " + str('${:,.2f}'.format(total_price*1.0875)))
 print("---------------------------------")
 print("THANKS, SEE YOU AGAIN SOON!")
 print("---------------------------------")
