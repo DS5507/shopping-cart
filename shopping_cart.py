@@ -1,8 +1,9 @@
 # shopping_cart.py
 
 #from pprint import pprint
-import time
+import datetime
 import os
+import pickle
 
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
@@ -28,7 +29,8 @@ products = [
     {"id":21, "name": "Organic Bananas", "department": "produce", "aisle": "Fruit", "price": 0.79, "price_per": 1}
 ] # based on data from Instacart: https://www.instacart.com/datasets/grocery-shopping-2017
 
-localtime = time.asctime( time.localtime(time.time()) )
+localtime = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
+printtime = '{0:%Y-%m-%d-%H-%M-%S-%f}'.format(datetime.datetime.now())
 total_price = 0
 selected_ids = []
 id_list = []
@@ -76,7 +78,7 @@ print("---------------------------------")
 
 
 ## Print Receipt to File
-file_name = os.path.join(os.path.dirname(__file__), "Data", "Receipt.txt")
+file_name = os.path.join(os.path.dirname(__file__), "Receipts", "%s.txt" % printtime )
 
 with open (file_name, 'w') as file:
     file.write("---------------------------------")
