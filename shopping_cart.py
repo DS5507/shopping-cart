@@ -2,6 +2,7 @@
 
 #from pprint import pprint
 import time
+import os
 
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
@@ -43,7 +44,9 @@ while True:
         break
     else:
         selected_ids.append(selected_id)
-        #[p for p in selected_ids if str(p["price_per"])] == 1
+
+        ##Bananas
+        #[p for p in selected_id if p["price_per"]] == 1
         #pounds == input("# of Pounds").lower()
 
         
@@ -59,7 +62,7 @@ for selected_id in selected_ids:
     matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
     matching_product = matching_products[0]
     print("... " + matching_product["name"] + " (" + str('${:,.2f}'.format(matching_product["price"])) + ")")
-    total_price = matching_product["price"]
+    total_price = total_price + matching_product["price"]
     tax = total_price * 0.0875
     total_total = total_price + tax
 
@@ -70,3 +73,38 @@ print("TOTAL: " + str('${:,.2f}'.format(total_price*1.0875)))
 print("---------------------------------")
 print("THANKS, SEE YOU AGAIN SOON!")
 print("---------------------------------")
+
+
+## Print Receipt to File
+file_name = os.path.join(os.path.dirname(__file__), "Data", "Receipt.txt")
+
+with open (file_name, 'w') as file:
+    file.write("---------------------------------")
+    file.write("\n")
+    file.write("Green Foods Grocery")
+    file.write("\n")
+    file.write("www.Green-Foods-Grocery.com")
+    file.write("\n")
+    file.write("---------------------------------")
+    file.write("\n")
+    file.write("Checkout at: " + localtime)
+    file.write("\n")
+    file.write("---------------------------------")
+    file.write("\n")
+    file.write("SELECTED PRODUCTS:")
+    file.write("\n")
+    file.write("... " + matching_product["name"] + " (" + str('${:,.2f}'.format(matching_product["price"])) + ")")
+    file.write("\n")
+    file.write("---------------------------------")
+    file.write("\n")
+    file.write("SUBTOTAL: " + str('${:,.2f}'.format(total_price)))
+    file.write("\n")
+    file.write("TAX: " + str('${:,.2f}'.format(total_price*.0875)))
+    file.write("\n")
+    file.write("TOTAL: " + str('${:,.2f}'.format(total_price*1.0875)))
+    file.write("\n")
+    file.write("---------------------------------")
+    file.write("\n")
+    file.write("THANKS, SEE YOU AGAIN SOON!")
+    file.write("\n")
+    file.write("---------------------------------")
