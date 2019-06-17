@@ -31,7 +31,7 @@ products = [
     {"id":20, "name": "Pomegranate Cranberry & Aloe Vera Enrich Drink", "department": "beverages", "aisle": "juice nectars", "price": 4.25},
 ] # based on data from Instacart: https://www.instacart.com/datasets/grocery-shopping-2017
 
-localtime = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
+localtime = '{0:%Y-%m-%d %I:%M %p}'.format(datetime.datetime.now())
 printtime = '{0:%Y-%m-%d-%H-%M-%S-%f}'.format(datetime.datetime.now())
 total_price = 0
 selected_ids = []
