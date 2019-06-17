@@ -112,15 +112,17 @@ with open (file_name, 'w') as file:
     file.write("THANKS, SEE YOU AGAIN SOON!")
     file.write("\n\n")
     file.write("---------------------------------")
+print("Receipt saved locally to " + file_name)
 
 
 ##Receipt to Email
 while True:
     ereceipt = input("Would the customer like an email receipt as well? ").lower()
+    if ereceipt == "no":
+        print("No email sent.")
+        break
     while ereceipt not in str(echoice):
         print("Please type 'yes' or 'no':")
-        break
-    if ereceipt == "no":
         break
     else:
         cust_email = input("Please enter customer email address: ")
@@ -146,17 +148,5 @@ while True:
         # ISSUE REQUEST (SEND EMAIL)
 
         response = sg.client.mail.send.post(request_body=mail.get())
-
-        # PARSE RESPONSE
-
-        pp = pprint.PrettyPrinter(indent=4)
-
-        print("----------------------")
-        print("EMAIL")
-        print("----------------------")
-        print("RESPONSE: ", type(response))
-        print("STATUS:", response.status_code) #> 202 means success
-        print("HEADERS:")
-        pp.pprint(dict(response.headers))
-        print("BODY:")
-        print(response.body) #> this might be empty. it's ok.)
+        print("Email sent.  Thanks!")
+        exit()
