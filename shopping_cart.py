@@ -29,7 +29,6 @@ products = [
     {"id":18, "name": "Pizza for One Suprema Frozen Pizza", "department": "frozen", "aisle": "frozen pizza", "price": 12.50},
     {"id":19, "name": "Gluten Free Quinoa Three Cheese & Mushroom Blend", "department": "dry goods pasta", "aisle": "grains rice dried goods", "price": 3.99},
     {"id":20, "name": "Pomegranate Cranberry & Aloe Vera Enrich Drink", "department": "beverages", "aisle": "juice nectars", "price": 4.25},
-    {"id":21, "name": "Organic Bananas", "department": "produce", "aisle": "Fruit", "price": 0.79, "price_per": 1}
 ] # based on data from Instacart: https://www.instacart.com/datasets/grocery-shopping-2017
 
 localtime = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
@@ -51,11 +50,6 @@ while True:
         break
     else:
         selected_ids.append(selected_id)
-
-        ##Bananas
-        #[p for p in selected_id if p["price_per"]] == 1
-        #pounds == input("# of Pounds").lower()
-
 
 print("---------------------------------")
 print("Green Foods Grocery")
@@ -120,7 +114,7 @@ with open (file_name, 'w') as file:
     file.write("---------------------------------")
 
 
-
+##Receipt to Email
 while True:
     ereceipt = input("Would the customer like an email receipt as well? ").lower()
     while ereceipt not in str(echoice):
