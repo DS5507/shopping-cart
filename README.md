@@ -9,6 +9,12 @@ Clone or download from [GitHub source](https://github.com/DS5507/shopping-cart),
 cd ~\shopping-cart
 ```
 
+## Install Requirements
+```sh
+pip install python-dotenv
+pip install sendgrid==5.6.0
+```
+
 ## Usage
 
 Run the program:

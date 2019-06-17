@@ -1,9 +1,11 @@
 # shopping_cart.py
 
-#from pprint import pprint
+from pprint import pprint
 import datetime
 import os
-import pickle
+from dotenv import load_dotenv
+import sendgrid
+from sendgrid.helpers.mail import * # source of Email, Content, Mail, etc.
 
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
@@ -34,6 +36,8 @@ printtime = '{0:%Y-%m-%d-%H-%M-%S-%f}'.format(datetime.datetime.now())
 total_price = 0
 selected_ids = []
 id_list = []
+echoice = ["yes", "no"]
+total_items = []
 for i in products:
     id_list.append(i["id"])
 
@@ -51,7 +55,7 @@ while True:
         #[p for p in selected_id if p["price_per"]] == 1
         #pounds == input("# of Pounds").lower()
 
-        
+
 print("---------------------------------")
 print("Green Foods Grocery")
 print("www.Green-Foods-Grocery.com")
@@ -63,6 +67,7 @@ print("SELECTED PRODUCTS:")
 for selected_id in selected_ids:
     matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
     matching_product = matching_products[0]
+    
     print("... " + matching_product["name"] + " (" + str('${:,.2f}'.format(matching_product["price"])) + ")")
     total_price = total_price + matching_product["price"]
     tax = total_price * 0.0875
@@ -76,6 +81,7 @@ print("---------------------------------")
 print("THANKS, SEE YOU AGAIN SOON!")
 print("---------------------------------")
 
+print(matching_product)
 
 ## Print Receipt to File
 file_name = os.path.join(os.path.dirname(__file__), "Receipts", "%s.txt" % printtime )
@@ -110,3 +116,50 @@ with open (file_name, 'w') as file:
     file.write("THANKS, SEE YOU AGAIN SOON!")
     file.write("\n")
     file.write("---------------------------------")
+
+
+while True:
+    ereceipt = input("Would the customer like an email receipt as well? ").lower()
+    while ereceipt not in str(echoice):
+        print("Please type 'yes' or 'no':")
+        break
+    if ereceipt == "no":
+        break
+    else:
+        cust_email = input("Please enter customer email address: ")
+        load_dotenv()
+
+        SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY", "OOPS, please set env var called 'SENDGRID_API_KEY'")
+        MY_EMAIL_ADDRESS = os.environ.get("MY_EMAIL_ADDRESS", "OOPS, please set env var called 'MY_EMAIL_ADDRESS'")
+
+        # AUTHENTICATE
+
+        sg = sendgrid.SendGridAPIClient(apikey=SENDGRID_API_KEY)
+
+        # COMPILE REQUEST PARAMETERS (PREPARE THE EMAIL)
+
+        from_email = Email(MY_EMAIL_ADDRESS)
+        to_email = Email(MY_EMAIL_ADDRESS)
+        subject = "Green Foods Grocery Receipt"
+        message_text = "--------------------------------- \n\n Green Foods Grocery \n\n --------------------------------- \n\n Checkout at: "  + localtime + "\n\n--------------------------------- \n\n SELECTED PRODUCTS:\n\n" + "... " + matching_product["name"] + " (" + str('${:,.2f}'.format(matching_product["price"])) + ")\n\n SUBTOTAL: " + str('${:,.2f}'.format(total_price)) + "\n\n + TAX: " + str('${:,.2f}'.format(total_price*.0875)) + "\n\n TOTAL: " + str('${:,.2f}'.format(total_price*1.0875)) +  "\n\n --------------------------------- \n\n THANKS, SEE YOU AGAIN SOON! \n\n ---------------------------------"      
+        
+        content = Content("text/plain", message_text)
+        mail = Mail(from_email, subject, to_email, content)
+
+        # ISSUE REQUEST (SEND EMAIL)
+
+        response = sg.client.mail.send.post(request_body=mail.get())
+
+        # PARSE RESPONSE
+
+        pp = pprint.PrettyPrinter(indent=4)
+
+        print("----------------------")
+        print("EMAIL")
+        print("----------------------")
+        print("RESPONSE: ", type(response))
+        print("STATUS:", response.status_code) #> 202 means success
+        print("HEADERS:")
+        pp.pprint(dict(response.headers))
+        print("BODY:")
+        print(response.body) #> this might be empty. it's ok.)
