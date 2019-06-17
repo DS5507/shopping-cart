@@ -118,6 +118,7 @@ with open (file_name, 'w') as file:
     file.write("---------------------------------")
 
 
+
 while True:
     ereceipt = input("Would the customer like an email receipt as well? ").lower()
     while ereceipt not in str(echoice):
