@@ -37,7 +37,7 @@ total_price = 0
 selected_ids = []
 id_list = []
 echoice = ["yes", "no"]
-total_items = []
+list_product = []
 for i in products:
     id_list.append(i["id"])
 
@@ -56,6 +56,13 @@ while True:
         #pounds == input("# of Pounds").lower()
 
 
+def list_product (list_product):
+    list_product = []
+    for x in matching_product["name"]:
+        list_product.append(x)
+    return list_product
+print(list_product)
+
 print("---------------------------------")
 print("Green Foods Grocery")
 print("www.Green-Foods-Grocery.com")
@@ -67,7 +74,6 @@ print("SELECTED PRODUCTS:")
 for selected_id in selected_ids:
     matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
     matching_product = matching_products[0]
-    
     print("... " + matching_product["name"] + " (" + str('${:,.2f}'.format(matching_product["price"])) + ")")
     total_price = total_price + matching_product["price"]
     tax = total_price * 0.0875
@@ -81,7 +87,7 @@ print("---------------------------------")
 print("THANKS, SEE YOU AGAIN SOON!")
 print("---------------------------------")
 
-print(matching_product)
+
 
 ## Print Receipt to File
 file_name = os.path.join(os.path.dirname(__file__), "Receipts", "%s.txt" % printtime )
@@ -101,7 +107,10 @@ with open (file_name, 'w') as file:
     file.write("\n")
     file.write("SELECTED PRODUCTS:")
     file.write("\n")
-    file.write("... " + matching_product["name"] + " (" + str('${:,.2f}'.format(matching_product["price"])) + ")")
+    for selected_id in selected_ids:
+        matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
+        matching_product = matching_products[0]
+        file.write("... " + matching_product["name"] + " (" + str('${:,.2f}'.format(matching_product["price"])) + ")\n")
     file.write("\n")
     file.write("---------------------------------")
     file.write("\n")
@@ -142,7 +151,11 @@ while True:
         from_email = Email(MY_EMAIL_ADDRESS)
         to_email = Email(MY_EMAIL_ADDRESS)
         subject = "Green Foods Grocery Receipt"
-        message_text = "--------------------------------- \n\n Green Foods Grocery \n\n --------------------------------- \n\n Checkout at: "  + localtime + "\n\n--------------------------------- \n\n SELECTED PRODUCTS:\n\n" + "... " + matching_product["name"] + " (" + str('${:,.2f}'.format(matching_product["price"])) + ")\n\n SUBTOTAL: " + str('${:,.2f}'.format(total_price)) + "\n\n + TAX: " + str('${:,.2f}'.format(total_price*.0875)) + "\n\n TOTAL: " + str('${:,.2f}'.format(total_price*1.0875)) +  "\n\n --------------------------------- \n\n THANKS, SEE YOU AGAIN SOON! \n\n ---------------------------------"      
+        for selected_id in selected_ids:
+            matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
+            matching_product = matching_products[0]
+            list_product = matching_product["name"] + " (" + str('${:,.2f}'.format(matching_product["price"]))
+            message_text = "--------------------------------- \n\n Green Foods Grocery \n\n --------------------------------- \n\n Checkout at: "  + localtime + "\n\n--------------------------------- \n\n SELECTED PRODUCTS:\n\n" + "... " + list_product + ")\n\n SUBTOTAL: " + str('${:,.2f}'.format(total_price)) + "\n\n + TAX: " + str('${:,.2f}'.format(total_price*.0875)) + "\n\n TOTAL: " + str('${:,.2f}'.format(total_price*1.0875)) +  "\n\n --------------------------------- \n\n THANKS, SEE YOU AGAIN SOON! \n\n ---------------------------------"      
         
         content = Content("text/plain", message_text)
         mail = Mail(from_email, subject, to_email, content)
