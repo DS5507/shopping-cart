@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 import sendgrid
 from sendgrid.helpers.mail import * # source of Email, Content, Mail, etc.
 
+
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
     {"id":2, "name": "All-Seasons Salt", "department": "pantry", "aisle": "spices seasonings", "price": 4.99},
@@ -56,13 +57,6 @@ while True:
         #pounds == input("# of Pounds").lower()
 
 
-def list_product (list_product):
-    list_product = []
-    for x in matching_product["name"]:
-        list_product.append(x)
-    return list_product
-print(list_product)
-
 print("---------------------------------")
 print("Green Foods Grocery")
 print("www.Green-Foods-Grocery.com")
@@ -90,11 +84,11 @@ print("---------------------------------")
 
 
 ## Print Receipt to File
-file_name = os.path.join(os.path.dirname(__file__), "Receipts", "%s.txt" % printtime )
+file_name = os.path.join(os.path.dirname(__file__), "Receipts", "%s.txt" % printtime ) 
 
 with open (file_name, 'w') as file:
     file.write("---------------------------------")
-    file.write("\n")
+    file.write("\n\n\n")
     file.write("Green Foods Grocery")
     file.write("\n")
     file.write("www.Green-Foods-Grocery.com")
@@ -146,17 +140,13 @@ while True:
 
         sg = sendgrid.SendGridAPIClient(apikey=SENDGRID_API_KEY)
 
-        # COMPILE REQUEST PARAMETERS (PREPARE THE EMAIL)
-
+        # COMPILE REQUEST PARAMETERS (PREPARE THE EMAIL) 
         from_email = Email(MY_EMAIL_ADDRESS)
         to_email = Email(MY_EMAIL_ADDRESS)
         subject = "Green Foods Grocery Receipt"
-        for selected_id in selected_ids:
-            matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
-            matching_product = matching_products[0]
-            list_product = matching_product["name"] + " (" + str('${:,.2f}'.format(matching_product["price"]))
-            message_text = "--------------------------------- \n\n Green Foods Grocery \n\n --------------------------------- \n\n Checkout at: "  + localtime + "\n\n--------------------------------- \n\n SELECTED PRODUCTS:\n\n" + "... " + list_product + ")\n\n SUBTOTAL: " + str('${:,.2f}'.format(total_price)) + "\n\n + TAX: " + str('${:,.2f}'.format(total_price*.0875)) + "\n\n TOTAL: " + str('${:,.2f}'.format(total_price*1.0875)) +  "\n\n --------------------------------- \n\n THANKS, SEE YOU AGAIN SOON! \n\n ---------------------------------"      
-        
+        with open(file_name) as fp:
+            message_text = fp.read() 
+
         content = Content("text/plain", message_text)
         mail = Mail(from_email, subject, to_email, content)
 
